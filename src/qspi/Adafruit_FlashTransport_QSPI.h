@@ -49,6 +49,8 @@ public:
   virtual bool eraseCommand(uint8_t command, uint32_t address);
   virtual bool readMemory(uint32_t addr, uint8_t *data, uint32_t len);
   virtual bool writeMemory(uint32_t addr, uint8_t const *data, uint32_t len);
+
+  virtual SPIFlash_Device_t *getFlashDevice(void) { return NULL; }
 };
 
 #endif /* ADAFRUIT_FLASHTRANSPORT_QSPI_H_ */

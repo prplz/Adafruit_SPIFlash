@@ -27,6 +27,8 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <Arduino.h>
+#include "flash_devices.h"
 
 enum {
   SFLASH_CMD_READ = 0x03,      // Single Read
@@ -72,6 +74,10 @@ public:
   virtual void end(void) = 0;
 
   virtual bool supportQuadMode(void) = 0;
+
+  /// Get the already configured flash device for ESP32 or RP2040 transport
+  /// @return The configured flash device if exists, else null
+  virtual SPIFlash_Device_t *getFlashDevice(void) = 0;
 
   /// Set clock speed in hertz
   /// @param write_hz Write clock speed in hertz

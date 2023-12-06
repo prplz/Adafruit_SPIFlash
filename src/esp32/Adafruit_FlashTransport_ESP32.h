@@ -54,7 +54,7 @@ public:
 
   // Flash device is already detected and configured, get the pointer without
   // go through initial sequence
-  SPIFlash_Device_t *getFlashDevice(void);
+  virtual SPIFlash_Device_t *getFlashDevice(void);
 };
 
 #endif /* ADAFRUIT_FLASHTRANSPORT_ESP32_H_ */

@@ -76,7 +76,7 @@ public:
 
   // Flash device is already detected and configured, get the pointer without
   // go through initial sequence
-  SPIFlash_Device_t *getFlashDevice(void);
+  virtual SPIFlash_Device_t *getFlashDevice(void);
 };
 
 class Adafruit_FlashTransport_RP2040_CPY

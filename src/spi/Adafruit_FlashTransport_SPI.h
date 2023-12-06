@@ -56,6 +56,8 @@ public:
   virtual bool readMemory(uint32_t addr, uint8_t *data, uint32_t len);
   virtual bool writeMemory(uint32_t addr, uint8_t const *data, uint32_t len);
 
+  virtual SPIFlash_Device_t *getFlashDevice(void) { return NULL; }
+
 private:
   void fillAddress(uint8_t *buf, uint32_t addr);
 

@@ -61,32 +61,6 @@ Adafruit_SPIFlashBase::Adafruit_SPIFlashBase(
   _ind_active = true;
 }
 
-#if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_RP2040)
-
-// For ESP32 and RP2040 the SPI flash is already detected and configured
-// We could skip the initial sequence
-bool Adafruit_SPIFlashBase::begin(SPIFlash_Device_t const *flash_devs,
-                                  size_t count) {
-  (void)flash_devs;
-  (void)count;
-
-  if (_trans == NULL) {
-    return false;
-  }
-
-  _trans->begin();
-
-#if defined(ARDUINO_ARCH_ESP32)
-  _flash_dev = ((Adafruit_FlashTransport_ESP32 *)_trans)->getFlashDevice();
-#elif defined(ARDUINO_ARCH_RP2040)
-  _flash_dev = ((Adafruit_FlashTransport_RP2040 *)_trans)->getFlashDevice();
-#endif
-
-  return true;
-}
-
-#else
-
 /// List of all possible flash devices used by Adafruit boards
 static const SPIFlash_Device_t possible_devices[] = {
     // Main devices used in current Adafruit products
@@ -131,6 +105,12 @@ bool Adafruit_SPIFlashBase::begin(SPIFlash_Device_t const *flash_devs,
   }
 
   _trans->begin();
+
+  // Try get the already configured flash device (ESP32 or RP2040)
+  _flash_dev = _trans->getFlashDevice();
+  if (_flash_dev != NULL) {
+    return true;
+  }
 
   //------------- flash detection -------------//
   // Note: Manufacturer can be assigned with numerous of continuation code
@@ -260,8 +240,6 @@ bool Adafruit_SPIFlashBase::begin(SPIFlash_Device_t const *flash_devs,
 
   return true;
 }
-
-#endif // ARDUINO_ARCH_ESP32
 
 void Adafruit_SPIFlashBase::end(void) {
   if (_trans == NULL) {
